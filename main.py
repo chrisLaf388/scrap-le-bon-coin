@@ -25,10 +25,10 @@ time.sleep(5)
 
 
 #affiche numero de page
-numeroPageActuel = driver.find_element(By.CSS_SELECTOR, ".\\_21IEe").text
+numeroPageActuel = ''
+numeroPagePrecedent = '123'
 
-print(numeroPageActuel)
-while numeroPageActuel != driver.find_element(By.CSS_SELECTOR, ".\\_21IEe").text:
+while numeroPageActuel != numeroPagePrecedent:
     for i in range (1,42):
         try:
             #click sur la card de l'annonce
@@ -39,7 +39,7 @@ while numeroPageActuel != driver.find_element(By.CSS_SELECTOR, ".\\_21IEe").text
                 #Verifie si le bouton numéro est présent
                 if (driver.find_element_by_xpath('//*[@id="aside"]/div[1]/section/div/div[3]/div[2]/div[1]/button').text == "Voir le numéro"):
                     driver.find_element_by_xpath('//*[@id="aside"]/div[1]/section/div/div[3]/div[2]/div[1]/button').click()
-                    time.sleep(1)
+                    time.sleep(2)
                     print(driver.find_element_by_xpath('//*[@id="aside"]/div[1]/section/div/div[3]/div[2]/div[1]/a').text)
                     tel = driver.find_element_by_xpath('//*[@id="aside"]/div[1]/section/div/div[3]/div[2]/div[1]/a').text
 
@@ -63,16 +63,17 @@ while numeroPageActuel != driver.find_element(By.CSS_SELECTOR, ".\\_21IEe").text
         except:
             pass
 
-        # affiche numero de page
-        numeroPagePrecedent = driver.find_element(By.CSS_SELECTOR, ".\\_21IEe").text
+    # affiche numero de page avant de changer de page
+    numeroPagePrecedent = driver.find_element(By.CSS_SELECTOR, ".\\_21IEe").text
+    print('page précédente : '+numeroPagePrecedent)
 
-        # click de page suivante
-        driver.find_element(By.CSS_SELECTOR, ".\\_2WNWW:nth-child(5) .sc-bdvvaa").click()
-        time.sleep(5)
+    # click de page suivante
+    driver.find_element(By.CSS_SELECTOR, ".\\_2WNWW:nth-child(5) .sc-bdvvaa").click()
+    time.sleep(5)
 
-        # affiche numero de page
-        numeroPageActuel = driver.find_element(By.CSS_SELECTOR, ".\\_21IEe").text
-
+    # affiche numero de page
+    numeroPageActuel = driver.find_element(By.CSS_SELECTOR, ".\\_21IEe").text
+    print('numeroPageActuel' + numeroPageActuel)
 
 
 
