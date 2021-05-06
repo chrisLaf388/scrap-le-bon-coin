@@ -17,18 +17,23 @@ chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument("--incognito")
 driver.maximize_window()
 # Lien de la page formulaire
-driver.get('https://www.leboncoin.fr/recherche?category=40&text=wii&shippable=1&locations=Marseille_13008__43.22665_5.36869_6492&page=1')
-time.sleep(10)
-#cookie
-driver.find_element_by_xpath('//*[@id="didomi-notice-agree-button"]').click()
-time.sleep(5)
+pageContinue = True
+compt = 0
+erreurFinDeProg = 0
+
+while pageContinue:
+    compt+=1
+    driver.get('https://www.leboncoin.fr/recherche?text=wii&shippable=1&locations=Marseille_13008__43.22665_5.36869_6492&page='+str(compt))
+    time.sleep(10)
+    #cookie
+    driver.find_element_by_xpath('//*[@id="didomi-notice-agree-button"]').click()
+    time.sleep(5)
+
+    # affiche numero de page
+    numeroPageActuel = driver.find_element(By.CSS_SELECTOR, ".\\_21IEe").text
+    print('numeroPageActuel' + numeroPageActuel)
 
 
-#affiche numero de page
-numeroPageActuel = ''
-numeroPagePrecedent = '123'
-
-while numeroPageActuel != numeroPagePrecedent:
     for i in range (1,42):
         try:
             #click sur la card de l'annonce
@@ -39,7 +44,7 @@ while numeroPageActuel != numeroPagePrecedent:
                 #Verifie si le bouton numéro est présent
                 if (driver.find_element_by_xpath('//*[@id="aside"]/div[1]/section/div/div[3]/div[2]/div[1]/button').text == "Voir le numéro"):
                     driver.find_element_by_xpath('//*[@id="aside"]/div[1]/section/div/div[3]/div[2]/div[1]/button').click()
-                    time.sleep(2)
+                    time.sleep(5)
                     print(driver.find_element_by_xpath('//*[@id="aside"]/div[1]/section/div/div[3]/div[2]/div[1]/a').text)
                     tel = driver.find_element_by_xpath('//*[@id="aside"]/div[1]/section/div/div[3]/div[2]/div[1]/a').text
 
@@ -61,19 +66,17 @@ while numeroPageActuel != numeroPagePrecedent:
             driver.back()
             time.sleep(5)
         except:
+            erreurFinDeProg +=1
             pass
 
-    # affiche numero de page avant de changer de page
-    numeroPagePrecedent = driver.find_element(By.CSS_SELECTOR, ".\\_21IEe").text
-    print('page précédente : '+numeroPagePrecedent)
+        if erreurFinDeProg == 10:
+            pageContinue = False
+            break
 
-    # click de page suivante
-    driver.find_element(By.CSS_SELECTOR, ".\\_2WNWW:nth-child(5) .sc-bdvvaa").click()
-    time.sleep(5)
+    driver.quit()
 
-    # affiche numero de page
-    numeroPageActuel = driver.find_element(By.CSS_SELECTOR, ".\\_21IEe").text
-    print('numeroPageActuel' + numeroPageActuel)
+
+
 
 
 
